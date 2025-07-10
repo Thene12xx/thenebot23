@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TH3N3 Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        img {
+            width: 90px;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>THENEGPT</h2>
+    <img src="{{ url_for('static', filename='chatbot.jpg') }}" alt="Chatbot Image">
+    <div>
+        <label for="message">Your Message:</label><br>
+        <input type="text" id="message" placeholder="Type something..." style="width: 300px;">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <pre id="response" style="white-space: pre-wrap;"></pre>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById('message').value;
+            const res = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const data = await res.json();
+            document.getElementById('response').textContent = data.response || data.error;
+        }
+    </script>
+</body>
+</html>
